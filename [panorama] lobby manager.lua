@@ -186,12 +186,13 @@ local m_Options     = gui.Groupbox(m_Tab, "Options", 16, 16, 300)
 local m_AutoAccept          = gui.Checkbox(m_Options, "lobbymgr_autoaccept", "Auto-Accept", true)
 local m_AutoAcceptValue     = false
 local m_Commands            = gui.Checkbox(m_Options, "lobbymgr_commands", "Commands", true)
-gui.Button(m_Options, "Create Session", function() panorama.RunScript("FriendsListAPI.ActionInviteFriend('0', '');") end)
+local m_CreateSession = gui.Button(m_Options, "Create Session", function() panorama.RunScript("FriendsListAPI.ActionInviteFriend('0', '');") end)
+m_CreateSession:SetWidth(268)
 
 local m_Troll       = gui.Groupbox(m_Tab, "Troll", 300 + 16 + 5, 16, 300)
 local m_PlayerIndex = gui.Slider(m_Troll, "lobbymgr_playerindex", "Player Index (Host - 0)", 0, 0, 4)
 local m_ActionType  = gui.Listbox(m_Troll, "lobbymgr_actiontype", 125, "VAC ban", "Red Trust Factor", "Yellow Trust Factor")
-gui.Button(m_Troll, "Action", function()
+local m_Action = gui.Button(m_Troll, "Action", function()
     local m_ActionTypeValue = m_ActionType:GetValue()
 
     if (m_ActionTypeValue == 0) then
@@ -202,16 +203,19 @@ gui.Button(m_Troll, "Action", function()
         panorama.RunScript("PartyListAPI.SessionCommand('Game::ChatReportYellow', 'run all xuid ' + PartyListAPI.GetXuidByIndex(" .. m_PlayerIndex:GetValue() .. ") + ' yellow #SFUI_QMM_ERROR_X_AccountWarningTrustMinor');")
     end
 end)
+m_Action:SetWidth(268)
 
-gui.Button(m_Troll, "Spam Popup", function()
+local m_SpamPopup = gui.Button(m_Troll, "Spam Popup", function()
     for i=1,100 do
         panorama.RunScript("PartyListAPI.SessionCommand('Game::HostEndGamePlayAgain', 'run all xuid ' + MyPersonaAPI.GetXuid());")
     end
 end)
 
-gui.Button(m_Troll, "Close Popups", function()
+local m_ClosePopups = gui.Button(m_Troll, "Close Popups", function()
     panorama.RunScript("UiToolkitAPI.CloseAllVisiblePopups();")
 end)
+m_ClosePopups:SetPosX(141)
+m_ClosePopups:SetPosY(237)
 
 local m_RegisterHandles = true
 callbacks.Register("Draw", function()
