@@ -38,6 +38,7 @@ local function Register_HandleChatCommand()
             {
                 var cmds = [ 
                     '!iq <partial:name>|<lobbyindex>', '!dick <partial:name>|<lobbyindex>', '!gay <partial:name>|<lobbyindex>',
+                    '!8ball <question>',
                     '!loc <partial:name>',
                     '!startq (start queue)', '!stopq (stop queue)', 
                     '!norris (chuck norris joke)',
@@ -58,6 +59,24 @@ local function Register_HandleChatCommand()
 
             if (args[0] == '!gay')
                 return m_gResponseChat(target + ' is ' +  Math.floor(Math.random() * 101) + '% gay.');
+
+            if (args[0] == '!8ball')
+            {
+                if (args.length > 1 && args[1].length > 1)
+                {
+                    var array = [ 
+                        'It is certain.', 'It is decidedly so.', 'Without a doubt.', 'Yes definitely.', 'You may rely on it.', 'As I see it, yes.', 'Most likely.', 'Outlook good.', 'Yes.', 'Signs point to yes.',
+                        'Reply hazy, try again.', 'Ask again later.', 'Better not tell you now.', 'Cannot predict now.', 'Concentrate and ask again.',
+                        'Don\'t count on it.', 'My reply is no.', 'My sources say no.', 'Outlook not so good.', 'Very doubtful.'
+                    ];
+
+                    m_gResponseChat('[❽] ' + array[Math.floor(Math.random() * array.length)]);
+                }
+                else
+                    m_gResponseChat('[❽] Maybe ask some question?');
+
+                return;
+            }
                 
             if (args[0] == '!loc')
             {
