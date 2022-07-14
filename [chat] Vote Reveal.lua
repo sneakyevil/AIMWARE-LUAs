@@ -18,8 +18,8 @@ local CHudChat = FindHudElement("CHudChat")
 if (CHudChat == nil) then error("CHudChat is nullptr.") end
 
 local CHudChat_Printf = ffi.cast("void(__cdecl*)(void*, int, int, const char*, ...)", ffi.cast("void***", CHudChat)[0][CHudChat_Printf_Index])
-local function ChatPrint(player_index, msg)
-    CHudChat_Printf(CHudChat, player_index, 0, " " .. ChatPrefix .. msg)
+local function ChatPrint(msg)
+    CHudChat_Printf(CHudChat, 0, 0, " " .. ChatPrefix .. msg)
 end
 
 -- Callbacks
@@ -37,21 +37,21 @@ callbacks.Register("DispatchUserMessage", function(msg)
         m_VoteCastIgnoreEntityID = ent_idx
 
         if (vote_type == 0) then
-            ChatPrint(ent_idx, "\03" .. client.GetPlayerNameByIndex(ent_idx) .. "\01 started vote kick on \14" .. details_str)
+            ChatPrint("\09" .. client.GetPlayerNameByIndex(ent_idx) .. "\01 started vote kick on \14" .. details_str)
         elseif (vote_type == 6) then
-            ChatPrint(ent_idx, "\03" .. client.GetPlayerNameByIndex(ent_idx) .. "\01 started vote to surrender")
+            ChatPrint("\09" .. client.GetPlayerNameByIndex(ent_idx) .. "\01 started vote to surrender")
         elseif (vote_type == 13) then
-            ChatPrint(ent_idx, "\03" .. client.GetPlayerNameByIndex(ent_idx) .. "\01 started vote to timeout")
+            ChatPrint("\09" .. client.GetPlayerNameByIndex(ent_idx) .. "\01 started vote to timeout")
         else
             m_VoteCastHandle = false
             m_VoteCastIgnoreEntityID = -1
         end
     elseif (msgID == 47) then
         m_VoteCastHandle = false
-        ChatPrint(0, "\04Vote passed!")
+        ChatPrint("\04Vote passed!")
     elseif (msgID == 48) then
         m_VoteCastHandle = false
-        ChatPrint(0, "\07Vote failed!")
+        ChatPrint("\07Vote failed!")
     end
 end)
 
@@ -70,5 +70,5 @@ callbacks.Register("FireGameEvent", function(event)
 	local vote_option   = event:GetInt("vote_option")
     if (vote_option ~= 0 and vote_option ~= 1) then return end -- Only Yes/No handle
 
-    ChatPrint(entityid, "\03" .. client.GetPlayerNameByIndex(entityid) .. "\01 voted " .. (vote_option == 0 and "\04Yes" or "\07No"))
+    ChatPrint("\09" .. client.GetPlayerNameByIndex(entityid) .. "\01 voted " .. (vote_option == 0 and "\04Yes" or "\07No"))
 end)
