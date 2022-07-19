@@ -1,3 +1,4 @@
+e
 local function Register_Listener(commands)
     panorama.RunScript([[
 
@@ -177,7 +178,11 @@ local function Register_Listener(commands)
         var m_gLobbyManager = function()
         {
             if (GameStateAPI.IsConnectedOrConnectingToServer())
+            {
+                m_gLobbyManagerActive = false;
                 return;
+            }
+            m_gLobbyManagerActive = true;
 
             m_gHandleChatMessage(m_gLobbyManager_Commands);
 
@@ -192,8 +197,8 @@ local function Register_Listener(commands)
 
             $.Schedule(0.1, m_gLobbyManager);
         }
-        m_gLobbyManager();
-
+        if (typeof(m_gLobbyManagerActive) == 'undefined' || m_gLobbyManagerActive == false)
+            m_gLobbyManager();
     ]])
 end
 
