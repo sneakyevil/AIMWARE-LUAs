@@ -183,9 +183,12 @@ end
 client.AllowListener("player_death")
 callbacks.Register("FireGameEvent", function(event)
     if (event:GetName() ~= "player_hurt") then return end
-    if (client.GetPlayerIndexByUserID(event:GetInt("attacker")) ~= client.GetLocalPlayerIndex()) then return end
 
-    local Entity = entities.GetByIndex(client.GetPlayerIndexByUserID(event:GetInt("userid")))
+    local LocalPlayerIndex  = client.GetLocalPlayerIndex()
+    local EntityIndex       = client.GetPlayerIndexByUserID(event:GetInt("userid"))
+    if (client.GetPlayerIndexByUserID(event:GetInt("attacker")) ~= LocalPlayerIndex or LocalPlayerIndex == EntityIndex) then return end
+
+    local Entity = entities.GetByIndex(EntityIndex)
     if (Entity == nil) then return end
 
     local Hitsound_Index = m_Hitsound_Death:GetValue()
